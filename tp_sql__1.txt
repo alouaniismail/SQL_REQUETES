@@ -311,7 +311,14 @@ Lorsqu'on dit A.NOM_ACTEUR, on spécifie que la data est liée intrinséquement 
  rename column sql
  drop column..///
  
-
+17ième requête:
+select NUMERO_ACTEUR 
+from(
+select NUMERO_ACTEUR, count(DUREE)
+from ACTEUR natural join ROLE
+where NATION_ACTEUR='FRANCAISE'
+group by NOM_ACTEUR
+having count(DUREE)<=600);
 
 
 
