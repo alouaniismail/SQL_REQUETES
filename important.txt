@@ -8,18 +8,22 @@ a retenir:
 }
 .
 =>Chapitre suivant: implementation procédurale suivant PL/SQL et algorithmique de SGBD..///²²²
-comment partie de la a l'instant:
+comment partir de la a l'instant:
 sudo service mysql start
 sudo mysql -u root -p
->sql s'affiche
-PUIS source data$nbr.sql
+>sql:
+(s'affiche)
+	PUIS source data$nbr.sql
 .
 .
 .
-La base est chargée on peut faire des SHOW generaux ou bien des select * conditionelles ou non.
+
+=>
+
+||La base est chargée on peut faire des SHOW generaux ou bien des select * conditionelles ou non.
 On peut supprimer une colonne ajouter
 modifier un type d'attribut de colonne,etc...
-
+||
 Rq:
 where avant group by et having pour l'autre.
 oracle et mysql pour la base de l'enseirb.

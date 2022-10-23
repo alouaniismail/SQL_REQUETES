@@ -39,3 +39,5 @@ public class Joker {
     }
   }
 }
+//Exemple simple
+//On aura de plus en compliqué après...

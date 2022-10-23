@@ -1,13 +1,13 @@
 import java.sql.*;
 import oracle.jdbc.pool.OracleDataSource;
 
-public class Exemple {
+public class Exemple2 {
   public static void main(String[] args)
     throws SQLException, ClassNotFoundException, java.io.IOException {
     // Preparation de la connexion.
     OracleDataSource ods = new OracleDataSource();
-    ods.setUser("user");
-    ods.setPassword("password");
+    ods.setUser("ialouani");
+    ods.setPassword("ialouani");
     // URL de connexion, on remarque que le pilote utilise est "thin".
     ods.setURL("jdbc:oracle:thin:@localhost:1521/oracle");
 
@@ -17,15 +17,14 @@ public class Exemple {
       conn = ods.getConnection();
       stmt = conn.createStatement();
       // Execution de la requete.
-      ResultSet rset = stmt.executeQuery("select A.NOM_ACTEUR, count(*) " 
-					 + "from ACTEUR A, ROLE RO "
-					 + "where A.NUMERO_ACTEUR = RO.NUMERO_ACTEUR "
-					 + "group by A.NOM_ACTEUR");
-
-      while (rset.next()) {
-        // Affichage du resultat.
-	System.out.println(rset.getString(1) + " a "
-			   + rset.getInt(2) + " roles");
+      ResultSet rset = stmt.executeQuery("select * from ACTEUR");
+      ResultSetMetaData rslt=rset.getMetaData();
+      int number=rslt.getColumnCount();
+      int a=1;
+      while(a<=number){
+	//a: numero de la colonne courante.
+	  System.out.println(a+ "  " + rslt.getColumnName(a) + " " + rslt.getColumnTypeName(a));
+	  a++;
       }
     }
     finally {
@@ -38,3 +37,4 @@ public class Exemple {
     }
   }
 }
+
