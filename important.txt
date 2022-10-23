@@ -27,3 +27,9 @@ modifier un type d'attribut de colonne,etc...
 Rq:
 where avant group by et having pour l'autre.
 oracle et mysql pour la base de l'enseirb.
+Rq2:
+Structure jdbc a apprendre 
+&
+kill-emacs C-C C-X ou bien C-x C-C tue le buffer en ligne dans la connexion dans le terminal de la session de l'ordi distant..
+VOILA.
+(revenir pour les prochains tds avances)

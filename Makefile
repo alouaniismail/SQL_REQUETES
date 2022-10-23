@@ -1,2 +1,2 @@
 clean:
-	rm -rf *.java~ *.sql~ *.txt~ Makefile~
+	rm -rf *.java~ *.sql~ *.txt~ Makefile~ *.class

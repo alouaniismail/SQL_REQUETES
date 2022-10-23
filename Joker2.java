@@ -20,11 +20,11 @@ public class Joker2 {
       // de 1 � 10.
       for (int i = 1; i <= 10; i++) {
         pstmt1 = conn.prepareStatement("select distinct NUMERO_ACTEUR from ACTEUR natural join ROLE natural join FILM "
-    	                                + "where DUREE <= ?");
-        pstmt1.setInt(1, 80);//limitation a 1.2h.
+    	                                + "where DUREE = ?");
+        pstmt1.setInt(1, (i+1)*30);//limitation a 33 minutes.
         ResultSet rset = pstmt1.executeQuery();
         while (rset.next()) {
-        System.out.println("L'acteur joue dans un des films qui dure 1h20 " + rset.getString(1) + " : NUMERO_ACTEUR " );
+        System.out.println("L'acteur joue dans un des films qui dure moins de 33 mns\t\t///" + rset.getString(1) + "///\t\tNUMERO_ACTEUR " );
         }
       }
     }
