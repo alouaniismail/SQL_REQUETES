@@ -6,8 +6,8 @@ public class Joker {
       throws SQLException, ClassNotFoundException, java.io.IOException {
     // Preparation de la connexion. 
     OracleDataSource ods = new OracleDataSource();
-    ods.setUser("user");
-    ods.setPassword("password");
+    ods.setUser("ialouani");
+    ods.setPassword("ialouani");
     // URL de connexion, on remarque que le pilote utilise est "thin".
     ods.setURL("jdbc:oracle:thin:@localhost:1521/oracle");
 
