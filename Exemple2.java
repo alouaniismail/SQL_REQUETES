@@ -23,7 +23,7 @@ public class Exemple2 {
       int a=1;
       while(a<=number){
 	//a: numero de la colonne courante.
-	  System.out.println(a+ "  " + rslt.getColumnName(a) + " " + rslt.getColumnTypeName(a));
+  System.out.println(a+" "+rslt.getColumnName(a)+" "+rslt.getColumnTypeName(a));
 	  a++;
       }
     }
