@@ -20,7 +20,7 @@ public class Joker2 {
       // de 1 � 10.
       for (int i = 1; i <= 10; i++) {
         pstmt1 = conn.prepareStatement("select distinct NUMERO_ACTEUR from ACTEUR natural join ROLE natural join FILM "
-    	                                + "where DUREE <= ?");
+    	                                + "where DUREE = ?");
         pstmt1.setInt(1, 80);//limitation a 1.2h.
         ResultSet rset = pstmt1.executeQuery();
         while (rset.next()) {
