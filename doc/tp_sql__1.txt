@@ -1,0 +1,335 @@
+>A PARTIR DE LA QUESTION [4]:
+
+select NOM_ACTEUR 
+  from ACTEUR
+   where DATE_DE_NAISSANCE < DATE '1999-31-12' and DATE_DE_NAISSANCE > DATE '01-OCT-1950';
+------------------------------------------------------
+ANNEE-MOIS-JOUR : format.
+------------------------------------------------------
+ select NOM_DU_ROLE
+    from ROLE
+     where NUMERO_ACTEUR = 7
+     	   order by NOM_DU_ROLE asc;
+-------------------------
+ et desc pour l'ordre decroissant.
+-------------------------
+
+select NOM_REALISATEUR, PRENOM_REALISATEUR
+from REALISATEUR inner join FILM 
+on REALISATEUR.NUMERO_REALISATEUR = FILM.NUMERO_REALISATEUR 
+inner join ROLE
+on ROLE.NUMERO_FILM=FILM.NUMERO_FILM
+where ROLE.NUMERO_ACTEUR = 7;
+
+------------------------------------------------
+from A inner join B 
+on A.c=B.c
+inner join D
+on D.e=B.e
+where [cdt]
+<=>syntaxe de la triple jointure(jointure simple).
+-------------------------------------------------
+
+select NOM_REALISATEUR, PRENOM_REALISATEUR
+from REALISATEUR inner join FILM
+on REALISATEUR.NUMERO_REALISATEUR = FILM.NUMERO_REALISATEUR
+inner join ROLE
+on ROLE.NUMERO_FILM=FILM.NUMERO_FILM
+inner join ACTEUR
+on ACTEUR.NUMERO_ACTEUR=ROLE.NUMERO_ACTEUR
+where NOM_ACTEUR='POIRET'
+order by NOM_ACTEUR asc;
+
+-------------------------------------------------
+Quadruple jointure pour lier toutes les tables du modele conceptuel 
+(sans cardinalitées).
+-------------------------------------------------
+
+select NOM_REALISATEUR, PRENOM_REALISATEUR
+from ACTEUR inner join ROLE
+on ACTEUR.NUMERO_ACTEUR = ROLE.NUMERO_ACTEUR
+inner join FILM
+on ROLE.NUMERO_FILM=FILM.NUMERO_FILM
+inner join REALISATEUR
+on REALISATEUR.NUMERO_REALISATEUR=FILM.NUMERO_REALISATEUR 
+where NOM_ACTEUR = 'POIRET'
+order by NOM_ACTEUR asc; 
+
+--------------------------------------------------------------
+selection sur la premiere jointure plus SIMPLE.(pas de parenthèses)
+--------------------------------------------------------------
+
+select ACTEUR.*
+from ACTEUR inner join ROLE
+on ACTEUR.NUMERO_ACTEUR = ROLE.NUMERO_ACTEUR
+inner join FILM
+on ROLE.NUMERO_FILM=FILM.NUMERO_FILM
+inner join REALISATEUR
+on REALISATEUR.NUMERO_REALISATEUR=FILM.NUMERO_REALISATEUR 
+where REALISATEUR.NUMERO_REALISATEUR = 7;
+
+-----------------------------------------------------------
+condition sur la dernière jointure (comme on a dit hier)
++select ACTEUR.* pour selectionner les champs acteurs.
+-----------------------------------------------------------
+
+select NUMERO_ACTEUR,NOM_ACTEUR
+from ACTEUR 
+where NATION_ACTEUR is not null ;
+
+------------------------------
+is not null en oracle.
+------------------------------
+
+select distinct REALISATEUR.NOM_REALISATEUR
+from REALISATEUR natural join  FILM
+where FILM.NUMERO_FILM is not null ; 
+
+------------------------------
+on checke le fichier base.sql 
+------------------------------
+
+select count(*)
+from REALISATEUR
+
+===========================================
+
+select NOM_ACTEUR, count(NUMERO_FILM)
+from ACTEUR natural join ROLE
+group by NOM_ACTEUR;
+
+===========================================
+
+select NOM_ACTEUR, max(DUREE), min(DUREE),avg(DUREE),max(DUREE)-min(DUREE) as ECART
+from ACTEUR inner join ROLE 
+on ACTEUR.NUMERO_ACTEUR=ROLE.NUMERO_ACTEUR
+inner join FILM
+on FILM.NUMERO_FILM=ROLE.NUMERO_FILM
+group by NOM_ACTEUR;
+
+===========================================
+
+select NOM_REALISATEUR, count(*) as NOMBRE_FILMS
+from REALISATEUR natural join FILM
+group by NOM_REALISATEUR
+having count(*) = 2 ;
+-------------------------------------------------------
+on enleve role seulement film et realisateur est suffisant 
+car numero_film est dans films table et on veut calculer le nombre 
+de films par utilisateur.
+
+===========================================
+
+
+
+
+
+
+
+(RESTE LA REQUETE 17.)
+
+select NUMERO_REALISATEUR, NOM_REALISATEUR, count(*) as NBR_FILMS
+from REALISATEUR natural join FILM
+group by NUMERO_REALISATEUR, NOM_REALISATEUR
+having count(*) >= 3;
+====================================
+select NUMERO_ACTEUR
+from(
+select NUMERO_ACTEUR, avg(DUREE) as MOY
+from ROLE natural join FILM
+group by NUMERO_ACTEUR
+having avg(DUREE) = 120 ) ;
+====================================
+
+====================================
+ 
+ select distinct NOM_ACTEUR
+  2  from ACTEUR
+  3  union
+  4  select NOM_REALISATEUR
+  5  from REALISATEUR ;
+
+====================================
+
+(Un seul resultat donc pas de repetition)
+select NOM_ACTEUR
+  2  from ACTEUR            
+  3  intersect 
+  4  select NOM_REALISATEUR
+  5  from REALISATEUR
+  6  ;
+  
+ ==========================================================
+ 
+(le compte est bon, c'est sans repetitions, les deux dernieres presagent que du bon)
+select NOM_ACTEUR 
+  2  from ACTEUR
+  3  minus
+  4  select NOM_REALISATEUR
+  5  from
+  6  REALISATEUR;
+
+
+=======================================================================
+
+select NUMERO_ACTEUR, NOM_ACTEUR
+  2  from ACTEUR
+  3  where (NATION_ACTEUR='FRANCAISE' or NATION_ACTEUR='AMERICAINE');
+======================================
+select NUMERO_REALISATEUR, NOM_REALISATEUR, PRENOM_REALISATEUR, NATION_REALISATEUR
+from(
+select NUMERO_REALISATEUR, NOM_REALISATEUR, NATION_REALISATEUR, PRENOM_REALISATEUR,count(NUMERO_FILM)
+from REALISATEUR left outer join FILM //intersection particuliere le 1/2 de la difference
+//symetrique..///
+using(NUMERO_REALISATEUR)
+group by NUMERO_REALISATEUR,NOM_REALISATEUR, PRENOM_REALISATEUR, NATION_REALISATEUR
+having count(NUMERO_FILM) = 0);
+=========================================================================================
+REQUETES IMBRIQUEES:
+On a vu:
+Les projections, les jointures, les sélections,les tris.(order by / (natural join/inner join.left outer join using(.)/produit scalaire avec where equivalence) /where/from)
+Apres: les regroupements: les fonctions d'agregations avec group by suivi de having (cdt.)
+Puis: les operateurs ensemblistes (distinct union, intersection, minus;)
+NOW: les requetes imbriquees deja utilisees..
+>
+=============
+=============
+1ère:
+select NOM_ACTEUR 
+  2  from ACTEUR
+  3  where NOM_ACTEUR in(
+  4  select NOM_REALISATEUR
+  5  from REALISATEUR
+  6  );
+#le mot in a retenir, pas seulement from((direct parenthesis) existe..
+-----------------
+2ième:
+select NUMERO_REALISATEUR
+from REALISATEUR natural join FILM
+where DUREE=(
+select max(DUREE)
+from Film);  
+-----------------
+3ième:
+//requete permettant d'avoir le nombre de nationnalitées par nationnalitée.
+select NUMERO_ACTEUR, NOM_ACTEUR 
+from ACTEUR
+where NATION_ACTEUR in(
+select NATION_REALISATEUR from(
+select NATION_REALISATEUR,count(NATION_REALISATEUR)
+from REALISATEUR
+group by NATION_REALISATEUR
+order by count(NATION_REALISATEUR) desc)
+where rownum<=1);
+//requete permettant de recuperer le max puis faire une projection.
+-----------------
+4ième:
+select distinct NOM_ACTEUR
+from ACTEUR natural join ROLE
+natural join FILM
+natural join REALISATEUR
+where NUMERO_REALISATEUR not in (7);
+-----------------
+5ième(la derniere):
+//on va faire une premiere requete qui associe a chaque realisateur le nombre de films
+//puis faire une projection sur le numero de realisateur de cette table.
+select NUMERO_REALISATEUR 
+from REALISATEUR 
+where NUMERO_REALISATEUR not in(
+select NUMERO_REALISATEUR from(
+select NUMERO_REALISATEUR, sum(NUMERO_FILM)
+from REALISATEUR natural join FILM
+group by NUMERO_REALISATEUR
+having sum(NUMERO_FILM) > 0));
+---------------------------
+============================
+*****************************
+Requetes avancees:
+A retenir avant:
+in(select max(DUREE) from FILM)
+from(select NUMERO_REALISATEUR,sum(NUMERO_FILM) from REALISATEUR natural join FILM group by NUMERO_REALISATEUR having sum(NUMERO_FILM)>0)
+where DUREE=(select max(DUREE) from FILM)
+not in (AUSSI**--**)
+reste: le rownum<=1 pour récupérer la 1ere colonne d'un résultat de projection. 
+Rq:
+Toutes les requetes ont ete faites avec des imbrications successives operationnelles.
+>
+28. recupere les noms distincts communs aux noms des acteurs et des realisateurs en meme temps.
+29.
+=>37 auteurs, 36 différents, 35 données par la commande.(distinct selection simple from POUR obtenir le numero2: 36).
+select NOM_ACTEUR, count(*) as OCCURENCES
+from ACTEUR A1 natural join ACTEUR A2
+group by NOM_ACTEUR
+having count(*) = 1;
+ATTENTION: HAVING PAS ESSENTIEL MAIS REMPLACE WHERE APRES UN GROUPEMENT.
+Les uniques sont ~ le rslt de la commande, n'est-ce-pas ??
+=>VERIFICATION::
+>>>>
+select distinct NOM_ACTEUR 
+from ACTEUR
+order by NOM_ACTEUR asc;
+OU BIEN:
+select NOM_ACTEUR,count(*)
+from ACTEUR A1 natural join ACTEUR A2
+group by NOM_ACTEUR
+having count(*) > 1;
+OU BIEN:******************************
+select NOM_ACTEUR
+from ACTEUR
+minus(
+select NOM_ACTEUR from(
+select NOM_ACTEUR, count(*)
+from ACTEUR A1 natural join ACTEUR A2
+group by NOM_ACTEUR
+having count(*)=1));
+RSLT:****************************MALLE.
+Malle se perd lorsqu'on veut des noms differents.
+et un autre nom se perd lorsqu'on execute la commande demandee et c'est pas question meme de concurrences(count(*))....
+RESUME:
+37 et Dalle se repete => 36 distincts.
+Mais pourquoi un nom qui est commun a un realisateur se supprime alors que les commandes sont équivalentes()://???
+Lorsqu'on dit A.NOM_ACTEUR, on spécifie que la data est liée intrinséquement à une instance de la table relationnelle ACTEUR (ACTEUR A) donc on retranche distinct 36 à 1 cela fait 35 soit 35 non realisateurs mais purement acteurs qui apparaissent.
+
+========================================================
+>REQUETES DE MISES A JOUR.
+1.insert into REALISATEUR values ( 15 , 'ALOUANI'    , 'Ismail'         , 'FRANCAISE'  ) ;
+2.delete from ACTEUR
+ where NATION_ACTEUR='AMERICAINE';(les contraintes de dependances s'affichent pas normalement, on pourrait pas modifier corromper la base donnes.sql)
+ 3.update FILM
+ set DUREE=DUREE+60;//ajouter une heure à chaque durée de film(instance de FILM).
+ Il y a même la syntaxe un 'peu' similaire :
+ sql alter table mais elle est limitée (renommage des types, ..) ; la suppression en est la plus forte et ca sert plutôt à supprimer des colonnes via:
+ alter table `..`
+ drop nom_colonne.
+ RESUME POUR ALTER TABLE:
+ UPDATE `..` (mysql) de meme: alter table `..`
+ PUIS: 6 possiblitées:
+ add colomun
+ sql add colomun
+ add column sql (PortgreSql/Oracle/Sqlite/Mysql...)
+ dete column
+ rename column sql
+ drop column..///
+ 
+17ième requête:
+----------------------------
+select NUMERO_ACTEUR
+from(
+select NUMERO_ACTEUR,count(DUREE)
+from ACTEUR natural join ROLE
+natural join FILM
+where NATION_ACTEUR='FRANCAISE'
+group by NUMERO_ACTEUR
+having count(DUREE)<=600);
+
+where: apres la jointure toujours.
+group by tout a la fin suivi de having ..
+
+
+
+------------------------------------------------------------------------||||||||||||||||.//
+
+
+VOILA.
+FIN_td1.(JDBC APRES../////)
+.//////

@@ -1,0 +1,5 @@
+TOUT LE TD1/2 a ete refait sans jointures.
+C'est facile
+Attention tout de meme aux requetes imbriquees
+et jdbc.
+(le fichier en entier a été supprimé mais il existe une correction promeuttant des résultats bons et corrects.//)
